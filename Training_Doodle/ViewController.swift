@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let CanvasVC = storyboard.instantiateViewController(withIdentifier: "Canvas") as! CanvasViewController
         CanvasVC.img = imgView.image!
-        navigationController?.pushViewController(CanvasVC, animated: true)
+        self.navigationController?.pushViewController(CanvasVC, animated: true)
     }
 }
 

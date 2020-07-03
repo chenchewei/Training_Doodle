@@ -112,7 +112,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Sib-xs-zqK">
                                 <rect key="frame" x="0.0" y="650" width="414" height="165"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sWB-gk-OVn">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sWB-gk-OVn">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -128,9 +128,16 @@
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="M2o-PI-cvQ" id="Dbp-ye-zSM"/>
+                                    <outlet property="delegate" destination="M2o-PI-cvQ" id="J69-1s-LQG"/>
+                                </connections>
                             </collectionView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Yql-Wr-pRH">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yql-Wr-pRH">
                                 <rect key="frame" x="18" y="823" width="378" height="31"/>
+                                <connections>
+                                    <action selector="SliderValueChanged:" destination="M2o-PI-cvQ" eventType="valueChanged" id="kxI-4K-U8U"/>
+                                </connections>
                             </slider>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -154,6 +161,8 @@
                     </view>
                     <connections>
                         <outlet property="DoodleImgView" destination="Gmt-9Q-srB" id="fgy-U2-jDn"/>
+                        <outlet property="PaletteCollectionTable" destination="Sib-xs-zqK" id="hTy-4I-FiF"/>
+                        <outlet property="Slider" destination="Yql-Wr-pRH" id="Ytf-gi-rNP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AMs-mD-4NK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

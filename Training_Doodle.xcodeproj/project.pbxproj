@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C0361D124AEDB0900F9502A /* LineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0361D024AEDB0900F9502A /* LineModel.swift */; };
+		6C0361D524AEDEC000F9502A /* PaletteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0361D324AEDEC000F9502A /* PaletteCollectionViewCell.swift */; };
+		6C0361D624AEDEC000F9502A /* PaletteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C0361D424AEDEC000F9502A /* PaletteCollectionViewCell.xib */; };
 		6CE5C3FD24AA14AA00C00F08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3FC24AA14AA00C00F08 /* AppDelegate.swift */; };
 		6CE5C3FF24AA14AA00C00F08 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3FE24AA14AA00C00F08 /* SceneDelegate.swift */; };
 		6CE5C40124AA14AA00C00F08 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C40024AA14AA00C00F08 /* ViewController.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C0361D024AEDB0900F9502A /* LineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineModel.swift; sourceTree = "<group>"; };
+		6C0361D324AEDEC000F9502A /* PaletteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCollectionViewCell.swift; sourceTree = "<group>"; };
+		6C0361D424AEDEC000F9502A /* PaletteCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaletteCollectionViewCell.xib; sourceTree = "<group>"; };
 		6CE5C3F924AA14AA00C00F08 /* Training_Doodle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Training_Doodle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3FC24AA14AA00C00F08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CE5C3FE24AA14AA00C00F08 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C0361D224AEDE7800F9502A /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				6C0361D324AEDEC000F9502A /* PaletteCollectionViewCell.swift */,
+				6C0361D424AEDEC000F9502A /* PaletteCollectionViewCell.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
 		6CE5C3F024AA14AA00C00F08 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +73,7 @@
 		6CE5C3FB24AA14AA00C00F08 /* Training_Doodle */ = {
 			isa = PBXGroup;
 			children = (
+				6C0361D224AEDE7800F9502A /* CollectionView */,
 				6CE5C3FC24AA14AA00C00F08 /* AppDelegate.swift */,
 				6CE5C3FE24AA14AA00C00F08 /* SceneDelegate.swift */,
 				6CE5C40024AA14AA00C00F08 /* ViewController.swift */,
@@ -66,6 +82,7 @@
 				6CE5C40724AA14AD00C00F08 /* LaunchScreen.storyboard */,
 				6CE5C40A24AA14AD00C00F08 /* Info.plist */,
 				6CE5C41224AB6AA600C00F08 /* CanvasViewController.swift */,
+				6C0361D024AEDB0900F9502A /* LineModel.swift */,
 			);
 			path = Training_Doodle;
 			sourceTree = "<group>";
@@ -128,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C0361D624AEDEC000F9502A /* PaletteCollectionViewCell.xib in Resources */,
 				6CE5C40924AA14AD00C00F08 /* LaunchScreen.storyboard in Resources */,
 				6CE5C40624AA14AD00C00F08 /* Assets.xcassets in Resources */,
 				6CE5C40424AA14AA00C00F08 /* Main.storyboard in Resources */,
@@ -141,10 +159,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C0361D524AEDEC000F9502A /* PaletteCollectionViewCell.swift in Sources */,
 				6CE5C40124AA14AA00C00F08 /* ViewController.swift in Sources */,
 				6CE5C3FD24AA14AA00C00F08 /* AppDelegate.swift in Sources */,
 				6CE5C3FF24AA14AA00C00F08 /* SceneDelegate.swift in Sources */,
 				6CE5C41324AB6AA600C00F08 /* CanvasViewController.swift in Sources */,
+				6C0361D124AEDB0900F9502A /* LineModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
