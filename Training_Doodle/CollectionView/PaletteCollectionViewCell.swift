@@ -15,6 +15,7 @@ class PaletteCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    /* Setting colors */
     func setCell(color: UIColor) {
         ColorLabel.backgroundColor = color
     }
