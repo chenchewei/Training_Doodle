@@ -11,7 +11,7 @@ import UIKit
 class Doodle : UIView {
 
     var lines = [Line]()
-    var SliderValue = Float()
+    var SliderValue = 1.0
     var StrokeColor = UIColor()
 
     override func draw(_ rect: CGRect) {
@@ -34,16 +34,23 @@ class Doodle : UIView {
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        lines.append(Line(Width: SliderValue, Color: StrokeColor, Points: []))
+        guard let point = touches.first?.location(in: nil) else { return }
+        guard let convertPoint = self.superview?.superview?.convert(point, to: self) else { return }
+        let rect = self.bounds
+        if(rect.contains(convertPoint)){
+            lines.append(Line(Width: Float(SliderValue), Color: StrokeColor, Points: []))
+        }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: nil) else { return }
         guard var LinesFinale = lines.popLast() else { return }
-        LinesFinale.Points.append(point)
+        
+        guard let convertPoint = self.superview?.superview?.convert(point, to: self) else { return }
+        
+        LinesFinale.Points.append(convertPoint)
         lines.append(LinesFinale)
         setNeedsDisplay()
     }
-
 }
 
 class CanvasViewController: UIViewController {
@@ -62,11 +69,20 @@ class CanvasViewController: UIViewController {
         super.viewDidLoad()
         TableViewInit()
         DoodleImgView.image = img
-        view.addSubview(Canvas)
+        
+        print("DoodleImgView frame",DoodleImgView.frame)
+        
+        myView.addSubview(Canvas)
         Canvas.backgroundColor = .clear
-        Canvas.frame = CGRect(x: 0, y: 217, width: 414, height: 414) //DoodleImgView.frame or myView.frame  bugged
+        Canvas.frame = DoodleImgView.frame
         Canvas.StrokeColor = UIColor.black
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("DoodleImgView frame",DoodleImgView.frame)
+    }
+    
     
     func TableViewInit() {
         let cellNib = UINib(nibName: "PaletteCollectionViewCell", bundle: nil)
@@ -84,7 +100,7 @@ class CanvasViewController: UIViewController {
     }
     @IBAction func SliderValueChanged(_ sender: Any) {
 //        print("Changed")
-        Canvas.SliderValue = Slider.value
+        Canvas.SliderValue = Double(Slider.value)
     }
     @IBAction func SaveBtnClicked(_ sender: Any) {
         // Saving DoodleImg
