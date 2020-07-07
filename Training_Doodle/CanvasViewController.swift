@@ -11,9 +11,9 @@ import UIKit
 class CanvasViewController: UIViewController {
     /* Received Datas */
     var img = UIImage()
-    
+    // A container view contains one view for doodling and the other for displaying image
     @IBOutlet var doodleContainer: DoodleContainer!
-//    @IBOutlet var doodle: Doodle!   // View for display image and doodling
+    
     @IBOutlet var PaletteCollectionTable: UICollectionView!
     @IBOutlet var Slider: UISlider!
     
@@ -23,10 +23,6 @@ class CanvasViewController: UIViewController {
         super.viewDidLoad()
         CollectionViewInit()
         CanvasInit()
-        
-        
-    }
-    override func viewWillAppear(_ animated: Bool) {
         doodleContainer.imageView.image = img   // Image chose from previous ViewController
     }
 
@@ -60,15 +56,16 @@ class CanvasViewController: UIViewController {
         let DoodleImg : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         // Saving BackgroundImg
-        let renderer = UIGraphicsImageRenderer(size: doodleContainer.doodle.bounds.size)
-        let BackgroundImage = renderer.image { (context) in
-            doodleContainer.doodle.drawHierarchy(in: doodleContainer.doodle.bounds, afterScreenUpdates: true)}
+        UIGraphicsBeginImageContext(doodleContainer.imageView.bounds.size)
+        doodleContainer.imageView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let imgViewImg : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
         // Merge two photos
-        let size = CGSize(width: 414, height: 414)
+        let size = CGSize(width: 414, height: 414)     // 414*414
         UIGraphicsBeginImageContext(size)
         let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        BackgroundImage.draw(in: areaSize)
-        DoodleImg.draw(in: areaSize, blendMode: .normal, alpha: 0.8)
+        imgViewImg.draw(in: areaSize)
+        DoodleImg.draw(in: areaSize, blendMode: .normal, alpha: 1)
         let mergedImg: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         // Saving
         UIImageWriteToSavedPhotosAlbum(mergedImg, nil, nil, nil)
