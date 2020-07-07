@@ -8,110 +8,61 @@
 
 import UIKit
 
-class Doodle : UIView {
-
-    var lines = [Line]()
-    var SliderValue = 1.0
-    var StrokeColor = UIColor()
-
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        guard let context = UIGraphicsGetCurrentContext() else { return }
-        /* Split lines */
-        lines.forEach { (line) in
-            context.setStrokeColor(line.Color.cgColor)
-            context.setLineWidth(CGFloat(line.Width))
-            context.setLineCap(.round)
-            for(index,point) in line.Points.enumerated() {
-                if(index == 0) {
-                    context.move(to: point)
-                }
-                else {
-                    context.addLine(to: point)
-                }
-            }
-            context.strokePath()
-        }
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let point = touches.first?.location(in: nil) else { return }
-        guard let convertPoint = self.superview?.superview?.convert(point, to: self) else { return }
-        let rect = self.bounds
-        if(rect.contains(convertPoint)){
-            lines.append(Line(Width: Float(SliderValue), Color: StrokeColor, Points: []))
-        }
-    }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let point = touches.first?.location(in: nil) else { return }
-        guard var LinesFinale = lines.popLast() else { return }
-        
-        guard let convertPoint = self.superview?.superview?.convert(point, to: self) else { return }
-        
-        LinesFinale.Points.append(convertPoint)
-        lines.append(LinesFinale)
-        setNeedsDisplay()
-    }
-}
-
 class CanvasViewController: UIViewController {
     /* Received Datas */
     var img = UIImage()
-    let Canvas = Doodle()
     
-    @IBOutlet var DoodleImgView: UIImageView!
+    @IBOutlet var doodleContainer: DoodleContainer!
+//    @IBOutlet var doodle: Doodle!   // View for display image and doodling
     @IBOutlet var PaletteCollectionTable: UICollectionView!
     @IBOutlet var Slider: UISlider!
-    @IBOutlet var myView: UIView!
     
-    let Palette = [UIColor.black,UIColor.blue,UIColor.brown,UIColor.cyan,UIColor.darkGray,UIColor.gray,UIColor.green,UIColor.lightGray,UIColor.magenta,UIColor.orange,UIColor.purple,UIColor.red,UIColor.white,UIColor.yellow,UIColor.systemTeal,UIColor.systemPink,UIColor.systemIndigo,UIColor.systemGray3,UIColor.systemGray4,UIColor.systemGray5,UIColor.systemGray6]   // 21
+    let Palette = [UIColor.blue,UIColor.cyan,UIColor.systemTeal,UIColor.green,UIColor.orange,UIColor.purple,UIColor.red,UIColor.magenta,UIColor.systemPink,UIColor.yellow,UIColor.systemIndigo,UIColor.black,UIColor.darkGray,UIColor.gray,UIColor.lightGray,UIColor.systemGray3,UIColor.systemGray4,UIColor.systemGray5,UIColor.systemGray6,UIColor.white]   // 21
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        TableViewInit()
-        DoodleImgView.image = img
+        CollectionViewInit()
+        CanvasInit()
         
-        print("DoodleImgView frame",DoodleImgView.frame)
         
-        myView.addSubview(Canvas)
-        Canvas.backgroundColor = .clear
-        Canvas.frame = DoodleImgView.frame
-        Canvas.StrokeColor = UIColor.black
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("DoodleImgView frame",DoodleImgView.frame)
+    override func viewWillAppear(_ animated: Bool) {
+        doodleContainer.imageView.image = img   // Image chose from previous ViewController
     }
-    
-    
-    func TableViewInit() {
+
+    func CollectionViewInit() {
         let cellNib = UINib(nibName: "PaletteCollectionViewCell", bundle: nil)
-        PaletteCollectionTable.register(cellNib, forCellWithReuseIdentifier: "cell")
+        PaletteCollectionTable.register(cellNib,forCellWithReuseIdentifier: "cell")
+        PaletteCollectionTable.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    }
+    func CanvasInit() {
+        doodleContainer.doodle.backgroundColor = .clear
+        doodleContainer.doodle.StrokeColor = UIColor.black
     }
     @IBAction func UndoBtnClicked(_ sender: Any) {
-        _ = Canvas.lines.popLast()
-        Canvas.setNeedsDisplay()
+        _ = doodleContainer.doodle.lines.popLast()
+        doodleContainer.doodle.setNeedsDisplay()
 //        print("Undo")
     }
     @IBAction func ClearBtnClicked(_ sender: Any) {
-        Canvas.lines.removeAll()
-        Canvas.setNeedsDisplay()
+        doodleContainer.doodle.lines.removeAll()
+        doodleContainer.doodle.setNeedsDisplay()
 //        print("Clear")
     }
     @IBAction func SliderValueChanged(_ sender: Any) {
 //        print("Changed")
-        Canvas.SliderValue = Double(Slider.value)
+        doodleContainer.doodle.SliderValue = Double(Slider.value)
     }
     @IBAction func SaveBtnClicked(_ sender: Any) {
         // Saving DoodleImg
-        UIGraphicsBeginImageContext(Canvas.bounds.size)
-        Canvas.layer.render(in: UIGraphicsGetCurrentContext()!)
+        UIGraphicsBeginImageContext(doodleContainer.doodle.bounds.size)
+        doodleContainer.doodle.layer.render(in: UIGraphicsGetCurrentContext()!)
         let DoodleImg : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         // Saving BackgroundImg
-        let renderer = UIGraphicsImageRenderer(size: myView.bounds.size)
+        let renderer = UIGraphicsImageRenderer(size: doodleContainer.doodle.bounds.size)
         let BackgroundImage = renderer.image { (context) in
-            myView.drawHierarchy(in: myView.bounds, afterScreenUpdates: true)}
+            doodleContainer.doodle.drawHierarchy(in: doodleContainer.doodle.bounds, afterScreenUpdates: true)}
         // Merge two photos
         let size = CGSize(width: 414, height: 414)
         UIGraphicsBeginImageContext(size)
@@ -121,9 +72,8 @@ class CanvasViewController: UIViewController {
         let mergedImg: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         // Saving
         UIImageWriteToSavedPhotosAlbum(mergedImg, nil, nil, nil)
-        print("Saved")
+//        print("Saved")
     }
-    
 }
 
 extension CanvasViewController : UICollectionViewDelegate, UICollectionViewDataSource {
@@ -131,12 +81,12 @@ extension CanvasViewController : UICollectionViewDelegate, UICollectionViewDataS
         return Palette.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = PaletteCollectionTable.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PaletteCollectionViewCell
-        cell.setCell(color: Palette[indexPath.row])
+        let cell = PaletteCollectionTable.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        cell.contentView.backgroundColor = Palette[indexPath.row]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        print("Selected")
-        Canvas.StrokeColor = Palette[indexPath.row]
+        doodleContainer.doodle.StrokeColor = Palette[indexPath.row]
     }
 }
